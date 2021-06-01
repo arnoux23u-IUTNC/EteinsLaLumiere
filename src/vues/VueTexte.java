@@ -1,66 +1,107 @@
 package vues;
 
+import modeles.GrilleLampe;
+import utils.Mode;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.EventListener;
 import java.util.Observable;
 import java.util.Observer;
 
 public class VueTexte extends JPanel implements Observer {
 
-    JButton config,alea,jouer,quit;
-    JLabel deplacement, nbd;
-    int deplactot;
+    private final JButton config;
+    private final JButton aleatoire;
+    private final JButton jouer;
+    private final JButton quitter;
 
-    public VueTexte(){
-        this.setLayout(new GridLayout(6,1));
+    private final JLabel count;
+    private final JLabel deplacement;
 
-        this.config = new JButton("Configurer");
-        this.alea = new JButton("Aleatoire");
-        this.jouer = new JButton("Jouer");
-        this.quit = new JButton("Quitter");
+    private GrilleLampe grille;
 
-        this.deplacement = new JLabel();
-        this.deplacement.setHorizontalAlignment(SwingConstants.CENTER);
+    public VueTexte() {
+        this.setPreferredSize(new Dimension(250, 800));
+        this.setLayout(new GridLayout(6, 1));
 
-        this.nbd = new JLabel();
-        this.nbd.setHorizontalAlignment(SwingConstants.CENTER);
-        this.nbd.setFont(new Font("Arial",Font.BOLD,20));
+        config = new JButton("Configurer");
+        aleatoire = new JButton("Aleatoire");
+        jouer = new JButton("Jouer");
+        jouer.setEnabled(false);
+        quitter = new JButton("Quitter");
+        quitter.setEnabled(false);
 
-        this.deplactot = 0;
+        deplacement = new JLabel();
+        deplacement.setHorizontalAlignment(SwingConstants.CENTER);
 
-        this.deplacement.setText("Nombre de deplacement:");
-        this.nbd.setText(String.valueOf(this.deplactot));
+        count = new JLabel();
+        count.setHorizontalAlignment(SwingConstants.CENTER);
+        count.setFont(new Font("Arial", Font.BOLD, 20));
 
-        this.quit.addActionListener(e -> System.exit(0));
+        deplacement.setText("Nombre de deplacement:");
+        count.setText("0");
 
-        this.add(this.config);
-        this.add(this.alea);
-        this.add(this.jouer);
-        this.add(this.deplacement);
-        this.add(this.nbd);
-        this.add(this.quit);
+        config.addActionListener(e -> goToConfigure());
+        aleatoire.addActionListener(e -> goToAlea());
+        jouer.addActionListener(e -> goToPlay());
+        quitter.addActionListener(e -> System.exit(1));
+
+        this.add(config);
+        this.add(aleatoire);
+        this.add(jouer);
+        this.add(deplacement);
+        this.add(count);
+        this.add(quitter);
     }
 
-    public void ajouterDeplacement(){
-        this.deplactot +=1;
-        this.nbd.setText(String.valueOf(this.deplactot));
+    private void goToConfigure() {
+        grille.changerMode(Mode.CONFIGURATION);
     }
 
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setPreferredSize(new Dimension(200,500));
-        VueTexte t = new VueTexte();
-        f.add(t);
-        f.pack();
-        f.setVisible(true);
+    private void goToPlay() {
+        grille.changerMode(Mode.JOUER);
+    }
+
+    private void goToAlea() {
+        grille.changerMode(Mode.ALEATOIRE);
+        grille.regenerer(this);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        switch (grille.getMode()) {
+            case CONFIGURATION -> {
+                config.setEnabled(false);
+                aleatoire.setEnabled(true);
+                quitter.setEnabled(false);
+                jouer.setEnabled(grille.isFini());
+            }
+            case JOUER -> {
+                config.setEnabled(false);
+                aleatoire.setEnabled(false);
+                quitter.setEnabled(true);
+                jouer.setEnabled(false);
+            }
+            case NORMAL -> {
+                config.setEnabled(true);
+                aleatoire.setEnabled(true);
+                quitter.setEnabled(false);
+                jouer.setEnabled(false);
+            }
+            case ALEATOIRE -> {
+                config.setEnabled(true);
+                aleatoire.setEnabled(true);
+                quitter.setEnabled(false);
+                jouer.setEnabled(grille.isFini());
+            }
+        }
+        count.setText(String.valueOf(grille.getDeplacements()));
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        //TODO GET DEPLACEMENTS AND MAJ
+        grille = (GrilleLampe) o;
         repaint();
     }
 }
