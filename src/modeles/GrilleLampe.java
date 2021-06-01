@@ -26,12 +26,8 @@ public class GrilleLampe extends Observable {
         creerGrille();
     }
 
-    public void setDeplacements(int deplacements) {
-        this.deplacements = deplacements;
-    }
-
     private void creerGrille() {
-        lampes = new ArrayList<Lampe>() {{
+        lampes = new ArrayList<>() {{
             for (int i = 0; i < 25; i++) {
                 add(new Lampe());
             }
@@ -73,6 +69,9 @@ public class GrilleLampe extends Observable {
 
     public void changerMode(Mode newMode) {
         this.mode = newMode;
+        if(newMode == Mode.NORMAL){
+            this.setDeplacements(0);
+        }
         setChanged();
         notifyObservers();
     }
@@ -81,7 +80,7 @@ public class GrilleLampe extends Observable {
         return mode;
     }
 
-    public void checkFini(){
+    public boolean checkFini(){
         int nballum = 0;
         for (Lampe l : lampes){
             if (l.isAllume()){
@@ -89,13 +88,16 @@ public class GrilleLampe extends Observable {
             }
         }
         this.fini = nballum == 0;
+        return this.fini;
     }
 
-    public boolean isFini() {
-        return !this.fini;
+    public void setDeplacements(int deplacements) {
+        this.deplacements = deplacements;
+        setChanged();
+        notifyObservers();
     }
 
     public int getDeplacements() {
-        return this.deplacements;
+        return deplacements;
     }
 }

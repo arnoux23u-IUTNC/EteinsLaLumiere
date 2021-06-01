@@ -23,19 +23,23 @@ public class ControlleurLampe extends MouseInputAdapter {
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
         Point p = e.getPoint();
-        int x = (int) p.getX()/(VueGraphique.W/5);
-        int y = (int) p.getY()/(VueGraphique.H/5);
-
-        switch (grille.getMode()){
-            case CONFIGURATION -> {
-                grille.switcher(x*5+y);
-            }
-            case JOUER -> {
-                grille.switcher(x*5+y);
-                grille.switcher((x-1)*5+y);
-                grille.switcher((x+1)*5+y);
-                grille.switcher(x*5+(y-1));
-                grille.switcher(x*5+(y+1));
+        int x = (int) p.getX() / (VueGraphique.W / 5);
+        int y = (int) p.getY() / (VueGraphique.H / 5);
+        if (x >= 0 && x < 5 && y >= 0 && y < 5) {
+            switch (grille.getMode()) {
+                case CONFIGURATION -> grille.switcher(x * 5 + y);
+                case JOUER -> {
+                    grille.switcher(x * 5 + y);
+                    if (x > 0)
+                        grille.switcher((x - 1) * 5 + y);
+                    if (x < 4)
+                        grille.switcher((x + 1) * 5 + y);
+                    if (y > 0)
+                        grille.switcher(x * 5 + (y - 1));
+                    if (y < 4)
+                        grille.switcher(x * 5 + (y + 1));
+                    grille.setDeplacements(grille.getDeplacements() + 1);
+                }
             }
         }
     }

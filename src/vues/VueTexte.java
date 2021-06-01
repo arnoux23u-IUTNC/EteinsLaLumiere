@@ -44,7 +44,7 @@ public class VueTexte extends JPanel implements Observer {
         config.addActionListener(e -> goToConfigure());
         aleatoire.addActionListener(e -> goToAlea());
         jouer.addActionListener(e -> goToPlay());
-        quitter.addActionListener(e -> System.exit(1));
+        quitter.addActionListener(e -> leave());
 
         this.add(config);
         this.add(aleatoire);
@@ -52,6 +52,11 @@ public class VueTexte extends JPanel implements Observer {
         this.add(deplacement);
         this.add(count);
         this.add(quitter);
+    }
+
+    private void leave() {
+        grille.changerMode(Mode.NORMAL);
+        grille.shutdownAll();
     }
 
     private void goToConfigure() {
@@ -75,9 +80,13 @@ public class VueTexte extends JPanel implements Observer {
                 config.setEnabled(false);
                 aleatoire.setEnabled(true);
                 quitter.setEnabled(false);
-                jouer.setEnabled(grille.isFini());
+                jouer.setEnabled(!grille.checkFini());
             }
             case JOUER -> {
+                if(grille.checkFini()){
+                    grille.changerMode(Mode.NORMAL);
+                    return;
+                }
                 config.setEnabled(false);
                 aleatoire.setEnabled(false);
                 quitter.setEnabled(true);
@@ -93,7 +102,7 @@ public class VueTexte extends JPanel implements Observer {
                 config.setEnabled(true);
                 aleatoire.setEnabled(true);
                 quitter.setEnabled(false);
-                jouer.setEnabled(grille.isFini());
+                jouer.setEnabled(!grille.checkFini());
             }
         }
         count.setText(String.valueOf(grille.getDeplacements()));
