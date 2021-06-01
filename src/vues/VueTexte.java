@@ -10,9 +10,9 @@ public class VueTexte extends JPanel {
 
     JButton config,alea,jouer,quit;
     JLabel deplacement, nbd;
+    int deplactot;
 
     public VueTexte(){
-
         this.setLayout(new GridLayout(6,1));
 
         this.config = new JButton("Configurer");
@@ -21,20 +21,38 @@ public class VueTexte extends JPanel {
         this.quit = new JButton("Quitter");
 
         this.deplacement = new JLabel();
+        this.deplacement.setHorizontalAlignment(SwingConstants.CENTER);
+
         this.nbd = new JLabel();
+        this.nbd.setHorizontalAlignment(SwingConstants.CENTER);
+        this.nbd.setFont(new Font("Arial",Font.BOLD,20));
+
+        this.deplactot = 0;
 
         this.deplacement.setText("Nombre de deplacement:");
-        this.nbd.setText("0");
+        this.nbd.setText(String.valueOf(this.deplactot));
 
-        ActionListener l = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        this.quit.addActionListener(e -> System.exit(0));
 
-            }
-        };
-
-
+        this.add(this.config);
+        this.add(this.alea);
+        this.add(this.jouer);
+        this.add(this.deplacement);
+        this.add(this.nbd);
+        this.add(this.quit);
     }
 
+    public void ajouterDeplacement(){
+        this.deplactot +=1;
+        this.nbd.setText(String.valueOf(this.deplactot));
+    }
 
+    public static void main(String[] args) {
+        JFrame f = new JFrame();
+        f.setPreferredSize(new Dimension(200,500));
+        VueTexte t = new VueTexte();
+        f.add(t);
+        f.pack();
+        f.setVisible(true);
+    }
 }
