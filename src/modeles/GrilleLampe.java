@@ -54,17 +54,20 @@ public class GrilleLampe extends Observable {
 
     public void regenerer(JPanel jp) {
         creerGrille();
-        int nbAlea = Integer.parseInt(JOptionPane.showInputDialog(jp,"Nombre de lampes allumées ? (1-15)", 8));
-        nbAlea = nbAlea < 1 ? 1 : Math.min(nbAlea, 15);
-        while (nbAlea != 0){
-            Lampe l = lampes.get(new Random().nextInt(lampes.size()));
-            if(!l.isAllume()){
-                l.allumer();
-                nbAlea--;
+        String r = JOptionPane.showInputDialog(jp,"Nombre de lampes allumées ? (1-15)", 8);
+        if(r!=null){
+            int nbAlea = Integer.parseInt(r);
+            nbAlea = nbAlea < 1 ? 1 : Math.min(nbAlea, 15);
+            while (nbAlea != 0){
+                Lampe l = lampes.get(new Random().nextInt(lampes.size()));
+                if(!l.isAllume()){
+                    l.allumer();
+                    nbAlea--;
+                }
             }
+            setChanged();
+            notifyObservers();
         }
-        setChanged();
-        notifyObservers();
     }
 
     public void changerMode(Mode newMode) {

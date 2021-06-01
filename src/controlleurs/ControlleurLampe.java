@@ -20,8 +20,8 @@ public class ControlleurLampe extends MouseInputAdapter {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        super.mouseClicked(e);
+    public void mousePressed(MouseEvent e) {
+        super.mousePressed(e);
         Point p = e.getPoint();
         int x = (int) p.getX() / (VueGraphique.W / 5);
         int y = (int) p.getY() / (VueGraphique.H / 5);
