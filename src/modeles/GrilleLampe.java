@@ -1,11 +1,14 @@
+package modeles;
+
 import ressources.Lampe;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * classe de modelisation
  */
-public class GrilleLampe {
+public class GrilleLampe extends Observable {
 
     private ArrayList<Lampe> lampes;
 
@@ -17,4 +20,13 @@ public class GrilleLampe {
         }};
     }
 
+    public void switcher(int i, boolean b){
+        lampes.get(i).switcher();
+        setChanged();
+        notifyObservers();
+    }
+
+    public ArrayList<Lampe> getLampes() {
+        return lampes;
+    }
 }

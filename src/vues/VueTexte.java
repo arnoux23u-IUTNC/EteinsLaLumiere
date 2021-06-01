@@ -5,8 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EventListener;
+import java.util.Observable;
+import java.util.Observer;
 
-public class VueTexte extends JPanel {
+public class VueTexte extends JPanel implements Observer {
 
     JButton config,alea,jouer,quit;
     JLabel deplacement, nbd;
@@ -54,5 +56,11 @@ public class VueTexte extends JPanel {
         f.add(t);
         f.pack();
         f.setVisible(true);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        //TODO GET DEPLACEMENTS AND MAJ
+        repaint();
     }
 }
