@@ -110,7 +110,7 @@ public class VueTexte extends JPanel implements Observer {
             }
             case JOUER -> {
                 if (grille.checkFini()) {
-                    grille.changerMode(Mode.NORMAL);
+                    grille.changerMode(Mode.FINI);
                     return;
                 }
                 config.setEnabled(false);
@@ -131,7 +131,8 @@ public class VueTexte extends JPanel implements Observer {
                 jouer.setEnabled(!grille.checkFini());
             }
         }
-        count.setText(String.valueOf(grille.getDeplacements()));
+        int deplacements = grille.getDeplacements();
+        count.setText(grille.getMode().equals(Mode.FINI) ? "Gagné en "+deplacements+" deplacement(s)gi" :  String.valueOf(deplacements));
     }
 
     /**

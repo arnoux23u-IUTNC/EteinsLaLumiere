@@ -10,5 +10,6 @@ public enum Mode {
     CONFIGURATION,
     NORMAL,
     JOUER,
-    ALEATOIRE
+    ALEATOIRE,
+    FINI
 }
