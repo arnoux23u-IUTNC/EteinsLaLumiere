@@ -45,8 +45,8 @@ public class VueGraphique extends JPanel implements Observer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int largeurLampe = getWidth() - (2 * VueGraphique.BORDER) / 5;
-        int hauteurLampe = getHeight() - (2 * VueGraphique.BORDER) / 5;
+        int largeurLampe = (getWidth() - (2 * VueGraphique.BORDER)) / 5;
+        int hauteurLampe = (getHeight() - (2 * VueGraphique.BORDER)) / 5;
 
         ArrayList<Lampe> lampes = grille.getLampes();
         for (int i = 0; i < 5; i++) {

@@ -50,8 +50,8 @@ public class ControlleurLampe extends MouseInputAdapter {
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);
         Point p = e.getPoint();
-        int x = (int) p.getX() / (vg.getWidth() - (2 * VueGraphique.BORDER) / 5);
-        int y = (int) p.getY() / (vg.getHeight() - (2 * VueGraphique.BORDER) / 5);
+        int x = (int) p.getX() / (vg.getWidth() / 5);
+        int y = (int) p.getY() / (vg.getHeight() / 5);
         if (x >= 0 && x < 5 && y >= 0 && y < 5) {
             switch (grille.getMode()) {
                 case CONFIGURATION -> grille.switcher(x * 5 + y);
