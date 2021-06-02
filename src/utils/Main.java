@@ -37,8 +37,9 @@ public class Main {
         new ControlleurLampe(gl, vg);
 
         //Creation de la fenetre
-        JFrame f = new JFrame("Eteins la lumière");
+        JFrame f = new JFrame("Eteins la lumière - ARNOUX | GERMONVILLE-BELLET");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setIconImage(new ImageIcon("files/icon.jpg").getImage());
         f.setLayout(new BorderLayout());
         f.setPreferredSize(new Dimension(1050, 800));
         f.add(vt, BorderLayout.WEST);
