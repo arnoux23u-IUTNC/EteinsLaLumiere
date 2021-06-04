@@ -43,31 +43,43 @@ public class ControlleurLampe extends MouseInputAdapter {
     /**
      * Methode ecrasee mousePressed
      * Declenchee par un clic de souris
+     * Methode annotee car complexe
      *
      * @param e Event
      */
     @Override
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);
-        Point p = e.getPoint();
-        int x = (int) p.getX() / (vg.getWidth() / 5);
-        int y = (int) p.getY() / (vg.getHeight() / 5);
-        if (x >= 0 && x < 5 && y >= 0 && y < 5) {
-            switch (grille.getMode()) {
-                case CONFIGURATION -> grille.switcher(x * 5 + y);
-                case JOUER -> {
-                    grille.switcher(x * 5 + y);
-                    if (x > 0)
-                        grille.switcher((x - 1) * 5 + y);
-                    if (x < 4)
-                        grille.switcher((x + 1) * 5 + y);
-                    if (y > 0)
-                        grille.switcher(x * 5 + (y - 1));
-                    if (y < 4)
-                        grille.switcher(x * 5 + (y + 1));
-                    grille.setDeplacements(grille.getDeplacements() + 1);
+        try {
+            //On recupere la couleur du clic sur l'ecran, qu'on garde en memoire
+            Color picked = new Robot().getPixelColor(e.getXOnScreen(), e.getYOnScreen());
+            //On enregistre la localisation du clic
+            Point p = e.getPoint();
+            //Division de la localisation pour trouver le numero de la lampe correspondante
+            int x = (int) p.getX() / (vg.getWidth() / 5);
+            int y = (int) p.getY() / (vg.getHeight() / 5);
+            //Switch pour eviter les debordements + Zone morte
+            if (x >= 0 && x < 5 && y >= 0 && y < 5 && (picked.equals(VueGraphique.allume) || picked.equals(VueGraphique.eteint))) {
+                switch (grille.getMode()) {
+                    //Si mode config, on switch la case
+                    case CONFIGURATION -> grille.switcher(x * 5 + y);
+                    //Si mode jouer, on switch la case plus le tour
+                    case JOUER -> {
+                        grille.switcher(x * 5 + y);
+                        if (x > 0)
+                            grille.switcher((x - 1) * 5 + y);
+                        if (x < 4)
+                            grille.switcher((x + 1) * 5 + y);
+                        if (y > 0)
+                            grille.switcher(x * 5 + (y - 1));
+                        if (y < 4)
+                            grille.switcher(x * 5 + (y + 1));
+                        grille.setDeplacements(grille.getDeplacements() + 1);
+                    }
                 }
             }
+        } catch (AWTException awtException) {
+            System.err.println("Erreur avec l'event MousePressed");
         }
     }
 }

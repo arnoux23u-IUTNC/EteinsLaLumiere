@@ -53,7 +53,7 @@ public class VueTexte extends JPanel implements Observer {
      */
     public VueTexte() {
 
-        this.setPreferredSize(new Dimension(250, 800));
+        this.setPreferredSize(new Dimension(300, 800));
         this.setLayout(new GridLayout(6, 1));
 
         config = new JButton("Configurer");
@@ -132,7 +132,14 @@ public class VueTexte extends JPanel implements Observer {
             }
         }
         int deplacements = grille.getDeplacements();
-        count.setText(grille.getMode().equals(Mode.FINI) ? "Gagné en "+deplacements+" deplacement(s)gi" :  String.valueOf(deplacements));
+        if(grille.getMode().equals(Mode.FINI)){
+            count.setForeground(Color.red);
+            count.setText("GAGNÉ : "+deplacements);
+        }else{
+            count.setForeground(Color.black);
+            count.setText(String.valueOf(deplacements));
+        }
+
     }
 
     /**

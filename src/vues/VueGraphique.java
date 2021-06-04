@@ -5,6 +5,7 @@ import ressources.Lampe;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.util.*;
 
 /**
@@ -28,11 +29,27 @@ public class VueGraphique extends JPanel implements Observer {
     public static final int BORDER = 10;
 
     /**
+     * Couleur etat allume
+     */
+    public static final Color allume = new Color(162, 255, 0);
+
+    /**
+     * Couleur etat eteint
+     */
+    public static final Color eteint = new Color(58, 110, 50);
+
+    /**
+     * Couleur de fonc
+     */
+    public static final Color bgColor = new Color(20, 20, 20);
+
+    /**
      * Constructeur public par defaut
      * Instancie une grille et appelle repaint
      */
     public VueGraphique() {
         setPreferredSize(new Dimension(800, 800));
+        setBackground(bgColor);
         grille = new GrilleLampe();
         repaint();
     }
@@ -45,6 +62,7 @@ public class VueGraphique extends JPanel implements Observer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D graphics2D = (Graphics2D) g;
         int largeurLampe = (getWidth() - (2 * VueGraphique.BORDER)) / 5;
         int hauteurLampe = (getHeight() - (2 * VueGraphique.BORDER)) / 5;
 
@@ -52,10 +70,11 @@ public class VueGraphique extends JPanel implements Observer {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 Lampe l = lampes.get(i * 5 + j);
-                g.setColor(l.isAllume() ? new Color(162, 255, 0) : new Color(58, 110, 50));
-                g.fillRect(BORDER + (i * largeurLampe), BORDER + (j * hauteurLampe), largeurLampe, hauteurLampe);
-                g.setColor(Color.BLACK);
-                g.drawRect(BORDER + (i * largeurLampe), BORDER + (j * hauteurLampe), largeurLampe, hauteurLampe);
+                graphics2D.setColor(l.isAllume() ? allume : eteint);
+                RoundRectangle2D rd = new RoundRectangle2D.Float(BORDER + (i * largeurLampe), BORDER + (j * hauteurLampe), largeurLampe, hauteurLampe, 40, 40);
+                graphics2D.fill(rd);
+                graphics2D.setColor(bgColor);
+                graphics2D.draw(rd);
             }
         }
     }

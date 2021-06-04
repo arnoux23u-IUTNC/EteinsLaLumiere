@@ -41,7 +41,7 @@ public class Main {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setIconImage(new ImageIcon("files/icon.jpg").getImage());
         f.setLayout(new BorderLayout());
-        f.setPreferredSize(new Dimension(1050, 800));
+        f.setPreferredSize(new Dimension(1100, 800));
         f.add(vt, BorderLayout.WEST);
         f.add(vg, BorderLayout.CENTER);
         gl.shutdownAll();   //Extinction des lampes par defaut
