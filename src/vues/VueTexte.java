@@ -70,7 +70,7 @@ public class VueTexte extends JPanel implements Observer {
         count.setHorizontalAlignment(SwingConstants.CENTER);
         count.setFont(new Font("Arial", Font.BOLD, 20));
 
-        deplacement.setText("Nombre de deplacement:");
+        deplacement.setText("Nombre de deplacements:");
         count.setText("0");
 
         config.addActionListener(e -> grille.changerMode(Mode.CONFIGURATION));
